@@ -1,0 +1,150 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+
+\newfont{\sfs}{cmssq8 at 9pt}
+\newcommand{\lc}[1]{{\sfs #1}}
+\newcommand{\eg}{{e.g.,\ }}
+\newcommand{\ie}{{i.e.,\ }}
+
+\lhead{CpSc 215: Software Development Foundations}
+\chead{\empty}
+\rhead{Spring 2014}
+\lfoot{\empty}
+\cfoot{\thepage}
+\rfoot{\empty}
+
+\setlength{\parindent}{0in}
+\setlength{\parskip}{6pt}
+
+\begin{document}
+\title{\vspace{-.35in}Project \#1:\\Web Crawler\footnote{This project 
+is based on material prepared by Dr. Jason O. Hallstrom}}
+\date{\empty}
+\maketitle
+
+\pagestyle{fancy}
+\thispagestyle{fancy}
+
+\vspace{-.75in}
+\section{Objectives}
+This project is designed to reinforce a number of learning objectives. 
+First, and most important, you will gain experience designing and 
+implementing a small (but interesting) Java application. This will reinforce 
+your object-oriented design skills, as well as your ability to effectively
+apply the Java development tools. More specifically, the project will reinforce 
+your understanding of Java interfaces, the Singleton pattern, Java
+exceptions, and the Java IO library. It will also improve your ability to
+debug Java-based systems.
+
+Before describing the project requirements, two words of caution are 
+in order. First, you should be prepared to experience some frustration
+with the level of detail provided in the assignment description. In order
+to learn object-oriented design skills, you need to be given a chance 
+to do some design --- which means that all of the implementation steps 
+can't be laid out for you in advance. This level of flexibility is more in line
+with what you will encounter when you are employed as a developer.
+
+The second warning is that this is a time-consuming assignment. You 
+are expected to take the time to investigate the Java class libraries. 
+Some of the most relevant classes are identified in this document. 
+Others could significantly simplify your implementation --- but you're
+expected to identify those through independent exploration. You will
+also be expected to learn basic HTML syntax, if you haven't done so
+already. There are a number of websites devoted to this topic. Have fun!
+Explore!
+
+\section{Overview}
+For this project, you will implement a simple command-line {\em web crawler}. The
+application will accept three arguments. The first will specify the web address from 
+which the crawl should begin. The second will specify the maximum crawl depth. Finally, 
+the third argument will specify the local directory used to store results from the crawl.
+
+When the crawl begins, it will perform a basic parse of the web page specified
+at the command-line. The goal of the parse is to identify the ({\em i}) images 
+used within the page, the ({\em ii}) other files linked from within the page\footnote{Excluding 	
+web pages and image files}, and the ({\em iii}) web pages linked from
+within the page. All three element sets will be saved to disk in the
+directory specified at the command-line. The third set of elements will be used
+as input to the next step in the page crawl; this process will be applied
+recursively up to the maximum specified crawl depth.
+
+It is worth emphasizing that the term {\em ``parse''} is being used
+loosely here. You are not required to do any sophisticated HTML 
+processing; use the simplest solution that works. The Java String 
+library provides more than adequate functionality for completing this
+task.  You may also use Regular Expressions or the JSoup Library.
+
+\section{Requirements}
+Again, much of the design work is left to you. So while you must satisfy
+the requirements listed here, many of the details are left to you. This
+is the fun part of programming!
+
+\begin{itemize}\itemsep 0.0in
+\item You must follow good design practices throughout your implementation. 
+In particular: ({\em i}) Program to interfaces wherever possible. ({\em ii}) Never 
+use \lc{public} fields. ({\em iii}) Follow Java naming conventions. ({\em iv})
+Simplify your code by eliminating redundancy. ({\em v}) Catch and handle all
+checked exceptions.
+
+\item Your main application class must be named \lc{WebCrawler}.
+
+\item Your application must include a \lc{WebPage} class used to represent a
+web page. The class must include the following methods: \lc{crawl()}, \lc{getImages()}, 
+\lc{getFiles()}, and \lc{getWebPages()}. The \lc{crawl()} method is used to parse the 
+web page represented by the target object. The remaining methods are used
+to retrieve the results of the parse. Hence, the \lc{get} methods must only 
+be invoked after \lc{crawl()} has terminated.
+
+\item Your application must include classes for representing the images, files,
+and web pages linked from within a page. These classes must be named
+\lc{WebImage}, \lc{WebFile}, and \lc{WebPage}, respectively. (The last class is
+discussed above.) Instances of these classes will be returned by the
+\lc{WebPage} {\em getter} methods discussed above.
+
+\item \lc{WebImage}, \lc{WebFile}, and \lc{WebPage} must each implement the
+\lc{WebElement} interface. This interface must provide methods to enable a
+client component (\ie a user of a \lc{WebElement} instance) to save the
+corresponding element to disk. 
+
+\item Your application must implement a {\em singleton} class,
+\lc{DownloadRepository}. An instance of this class must be suitably initialized
+at system startup using an appropriate \lc{static} initializer. This singleton
+must expose an interface that can be used by the crawler class (\lc{WebPage})
+to save a \lc{WebElement} object to the repository.
+\end{itemize}
+
+%An optional design review will be held the week of February 9$^{th}$. If you choose
+%to attend this review, you will only benefit if you've already made some progress on
+%your solution.
+
+\section{Submission Instructions}
+This project is due before class on Feburary 28th$^{th}$. Absolutely no late assignments
+will be accepted.
+
+When your project is complete, archive your solution and use the handin command to submit your
+work.  Please submit for your Eclipse project as a .zip archive usin the http://handin.cs.clemson.edu website.
+{\bf You must also turn in a hard copy of all of your source materials in class.}
+
+\section{Grading}
+Your project will be graded based on the quality of your design and
+implementation, as well as the functionality of the application itself. You are
+expected to correctly handle all basic web pages, under the assumption that the
+web page content is correct. If you encounter an error during processing
+---due to improper HTML formatting, embedded scripts that are not handled by
+your parser, etc.--- your application must handle the error gracefully --- this
+means terminating only the affected branch in your crawl.
+
+This is an intermediate course in software development. Your source materials
+should be properly documented. Your source must compile. Your application must
+not crash. A violation of any of these requirements will result in an automatic
+zero. {\bf Test your application thoroughly.}
+
+\section{Collaboration}
+You may work independently or with one partner. You must {\em not} discuss the
+problem or the solution with classmates outside of your group. Keep this in
+mind before you choose to work independently. 
+
+{\bf Collaborating in any manner with peers outside of your group will be treated as
+academic misconduct.}
+\end{document}
